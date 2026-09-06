@@ -1,321 +1,322 @@
-/**
-* Template Name: NiceAdmin
-* Updated: Sep 18 2023 with Bootstrap v5.3.2
-* Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-(function() {
-  "use strict";
+(function ($) {
+    'use strict';
 
-  /**
-   * Easy selector helper function
-   */
-  const select = (el, all = false) => {
-    el = el.trim()
-    if (all) {
-      return [...document.querySelectorAll(el)]
-    } else {
-      return document.querySelector(el)
-    }
-  }
-
-  /**
-   * Easy event listener function
-   */
-  const on = (type, el, listener, all = false) => {
-    if (all) {
-      select(el, all).forEach(e => e.addEventListener(type, listener))
-    } else {
-      select(el, all).addEventListener(type, listener)
-    }
-  }
-
-  /**
-   * Easy on scroll event listener 
-   */
-  const onscroll = (el, listener) => {
-    el.addEventListener('scroll', listener)
-  }
-
-  /**
-   * Sidebar toggle
-   */
-  if (select('.toggle-sidebar-btn')) {
-    on('click', '.toggle-sidebar-btn', function(e) {
-      select('body').classList.toggle('toggle-sidebar')
-    })
-  }
-
-  /**
-   * Search bar toggle
-   */
-  if (select('.search-bar-toggle')) {
-    on('click', '.search-bar-toggle', function(e) {
-      select('.search-bar').classList.toggle('search-bar-show')
-    })
-  }
-
-  /**
-   * Navbar links active state on scroll
-   */
-  let navbarlinks = select('#navbar .scrollto', true)
-  const navbarlinksActive = () => {
-    let position = window.scrollY + 200
-    navbarlinks.forEach(navbarlink => {
-      if (!navbarlink.hash) return
-      let section = select(navbarlink.hash)
-      if (!section) return
-      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
-        navbarlink.classList.add('active')
-      } else {
-        navbarlink.classList.remove('active')
-      }
-    })
-  }
-  window.addEventListener('load', navbarlinksActive)
-  onscroll(document, navbarlinksActive)
-
-  /**
-   * Toggle .header-scrolled class to #header when page is scrolled
-   */
-  let selectHeader = select('#header')
-  if (selectHeader) {
-    const headerScrolled = () => {
-      if (window.scrollY > 100) {
-        selectHeader.classList.add('header-scrolled')
-      } else {
-        selectHeader.classList.remove('header-scrolled')
-      }
-    }
-    window.addEventListener('load', headerScrolled)
-    onscroll(document, headerScrolled)
-  }
-
-  /**
-   * Back to top button
-   */
-  let backtotop = select('.back-to-top')
-  if (backtotop) {
-    const toggleBacktotop = () => {
-      if (window.scrollY > 100) {
-        backtotop.classList.add('active')
-      } else {
-        backtotop.classList.remove('active')
-      }
-    }
-    window.addEventListener('load', toggleBacktotop)
-    onscroll(document, toggleBacktotop)
-  }
-
-  /**
-   * Initiate tooltips
-   */
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-    return new bootstrap.Tooltip(tooltipTriggerEl)
-  })
-
-  /**
-   * Initiate quill editors
-   */
-  if (select('.quill-editor-default')) {
-    new Quill('.quill-editor-default', {
-      theme: 'snow'
-    });
-  }
-
-  if (select('.quill-editor-bubble')) {
-    new Quill('.quill-editor-bubble', {
-      theme: 'bubble'
-    });
-  }
-
-  if (select('.quill-editor-full')) {
-    new Quill(".quill-editor-full", {
-      modules: {
-        toolbar: [
-          [{
-            font: []
-          }, {
-            size: []
-          }],
-          ["bold", "italic", "underline", "strike"],
-          [{
-              color: []
-            },
-            {
-              background: []
-            }
-          ],
-          [{
-              script: "super"
-            },
-            {
-              script: "sub"
-            }
-          ],
-          [{
-              list: "ordered"
-            },
-            {
-              list: "bullet"
-            },
-            {
-              indent: "-1"
-            },
-            {
-              indent: "+1"
-            }
-          ],
-          ["direction", {
-            align: []
-          }],
-          ["link", "image", "video"],
-          ["clean"]
-        ]
-      },
-      theme: "snow"
-    });
-  }
-
-  /**
-   * Initiate TinyMCE Editor
-   */
-  const useDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const isSmallScreen = window.matchMedia('(max-width: 1023.5px)').matches;
-
-  tinymce.init({
-    selector: 'textarea.tinymce-editor',
-    plugins: 'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons',
-    editimage_cors_hosts: ['picsum.photos'],
-    menubar: 'file edit view insert format tools table help',
-    toolbar: 'undo redo | bold italic underline strikethrough | fontfamily fontsize blocks | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl',
-    toolbar_sticky: true,
-    toolbar_sticky_offset: isSmallScreen ? 102 : 108,
-    autosave_ask_before_unload: true,
-    autosave_interval: '30s',
-    autosave_prefix: '{path}{query}-{id}-',
-    autosave_restore_when_empty: false,
-    autosave_retention: '2m',
-    image_advtab: true,
-    link_list: [{
-        title: 'My page 1',
-        value: 'https://www.tiny.cloud'
-      },
-      {
-        title: 'My page 2',
-        value: 'http://www.moxiecode.com'
-      }
-    ],
-    image_list: [{
-        title: 'My page 1',
-        value: 'https://www.tiny.cloud'
-      },
-      {
-        title: 'My page 2',
-        value: 'http://www.moxiecode.com'
-      }
-    ],
-    image_class_list: [{
-        title: 'None',
-        value: ''
-      },
-      {
-        title: 'Some class',
-        value: 'class-name'
-      }
-    ],
-    importcss_append: true,
-    file_picker_callback: (callback, value, meta) => {
-      /* Provide file and text for the link dialog */
-      if (meta.filetype === 'file') {
-        callback('https://www.google.com/logos/google.jpg', {
-          text: 'My text'
-        });
-      }
-
-      /* Provide image and alt text for the image dialog */
-      if (meta.filetype === 'image') {
-        callback('https://www.google.com/logos/google.jpg', {
-          alt: 'My alt text'
-        });
-      }
-
-      /* Provide alternative source and posted for the media dialog */
-      if (meta.filetype === 'media') {
-        callback('movie.mp4', {
-          source2: 'alt.ogg',
-          poster: 'https://www.google.com/logos/google.jpg'
-        });
-      }
-    },
-    templates: [{
-        title: 'New Table',
-        description: 'creates a new table',
-        content: '<div class="mceTmpl"><table width="98%%"  border="0" cellspacing="0" cellpadding="0"><tr><th scope="col"> </th><th scope="col"> </th></tr><tr><td> </td><td> </td></tr></table></div>'
-      },
-      {
-        title: 'Starting my story',
-        description: 'A cure for writers block',
-        content: 'Once upon a time...'
-      },
-      {
-        title: 'New list with dates',
-        description: 'New List with dates',
-        content: '<div class="mceTmpl"><span class="cdate">cdate</span><br><span class="mdate">mdate</span><h2>My List</h2><ul><li></li><li></li></ul></div>'
-      }
-    ],
-    template_cdate_format: '[Date Created (CDATE): %m/%d/%Y : %H:%M:%S]',
-    template_mdate_format: '[Date Modified (MDATE): %m/%d/%Y : %H:%M:%S]',
-    height: 600,
-    image_caption: true,
-    quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote quickimage quicktable',
-    noneditable_class: 'mceNonEditable',
-    toolbar_mode: 'sliding',
-    contextmenu: 'link image table',
-    skin: useDarkMode ? 'oxide-dark' : 'oxide',
-    content_css: useDarkMode ? 'dark' : 'default',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
-  });
-
-  /**
-   * Initiate Bootstrap validation check
-   */
-  var needsValidation = document.querySelectorAll('.needs-validation')
-
-  Array.prototype.slice.call(needsValidation)
-    .forEach(function(form) {
-      form.addEventListener('submit', function(event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
+    $(function () {
+        function vt(k, fallback) {
+            var v = (GH_F.i18n || {})[k];
+            return (typeof v === 'string' && v !== '') ? v : fallback;
+        }
+        function vEsc(x) {
+            return String(x == null ? '' : x)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
-        form.classList.add('was-validated')
-      }, false)
-    })
+        // Self-contained, deliberately. This used to render with WooCommerce's own notice classes
+        // (woocommerce-message / -info / -error) on the theory that it would then look native â€” but
+        // those classes are styled in woocommerce.css, which a BLOCK theme never loads on the front
+        // end. Whether the card had any appearance at all came down to which compatibility
+        // stylesheet happened to be enqueued; on this test site it was the Twenty Twenty-Three one,
+        // and the notice icon rendered as a missing-glyph box because the icon font was absent.
+        // The styling now lives in gh-frontend.css and uses no colour of its own beyond a
+        // semantic border, so it looks the same in every theme, light or dark.
+        function verifyCard(state, name, region) {
+            var skipped = state === 'skipped';
+            var eyebrow = skipped ? vt('skipped', 'Not checked') : vt('verifiedLabel', 'Verified');
+            var title   = skipped ? vt('skippedName', 'you chose to skip') : (name || '');
+            // Checkmark for a confirmed account, a plain dash for a skipped one â€” same badge shape
+            // either way so the card layout never jumps between the two states.
+            var icon = skipped
+                ? '<svg viewBox="0 0 20 20" width="12" height="12" fill="none" aria-hidden="true"><path d="M5 10h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+                : '<svg viewBox="0 0 20 20" width="12" height="12" fill="none" aria-hidden="true"><path d="M4 10.3l3.3 3.3L16 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            var html = '<div class="gh-verify-note ' + (skipped ? 'is-skip' : 'is-ok') + '" role="alert">'
+                     + '<span class="gh-verify-badge">' + icon + '</span>'
+                     + '<span class="gh-verify-body">'
+                     + '<span class="gh-verify-eyebrow">' + vEsc(eyebrow) + '</span>'
+                     + '<span class="gh-verify-name">' + vEsc(title) + '</span>';
+            if (!skipped && region) {
+                html += '<span class="gh-verify-sub">' + vEsc(vt('regionLabel', 'Region:')) + ' <b>' + vEsc(region) + '</b></span>';
+            }
+            html += '</span>'
+                 // A close icon in the corner, same job as the old "change" link (drops the result so
+                 // the buyer can edit + re-check), just matching the new card's visual language.
+                 + '<a href="#" class="gh-verify-clear" aria-label="' + vEsc(vt('clearCheck', 'change')) + '">&times;</a>'
+                 + '</div>';
+            return html;
+        }
 
-  /**
-   * Initiate Datatables
-   */
-  const datatables = select('.datatable', true)
-  datatables.forEach(datatable => {
-    new simpleDatatables.DataTable(datatable);
-  })
+        // Two failures, two offers:
+        //   retryable  â€” OUR side was unreachable or unwell. The same input may well work â†’ RETRY.
+        //   definitive â€” the account does not exist as typed. Retrying changes nothing â†’ fix the ID.
+        //
+        // Whether Skip is offered depends on the shop's setting:
+        //   optional â€” always. Skipping is the buyer's call and is recorded on the line item.
+        //   required â€” only for a RETRYABLE failure. "Required" has to mean the account was
+        //              confirmed, or the setting is theatre: a mistyped ID with a Skip link beside
+        //              it is exactly the top-up that reaches a stranger. A supplier outage still
+        //              must not stop the shop selling, so that one case keeps its escape hatch â€”
+        //              and it posts a different value so the server can tell the two apart.
+        function verifyFailed($res, $scope, message, retryable) {
+            var strict  = GH_F.require_verify === '1';
+            var canSkip = !strict || retryable;
+            var html = '<div class="gh-verify-note is-bad" role="alert">' + vEsc(message);
+            if (retryable) {
+                html += ' <a href="#" class="gh-verify-retry">' + vEsc(vt('retryCheck', 'try again')) + '</a>';
+            }
+            if (canSkip) {
+                html += ' <a href="#" class="gh-verify-skip" data-why="'
+                     + (retryable ? 'unavailable' : 'chose') + '">'
+                     + vEsc(vt('skipCheck', 'Skip')) + '</a>';
+            } else {
+                html += ' <span class="gh-verify-mustfix">'
+                     + vEsc(vt('mustFix', 'Please correct the details above.')) + '</span>';
+            }
+            html += '</div>';
+            $res.html(html);
+            $res.data('ghScope', $scope);
+            // Drop any earlier PASS. A buyer who verifies, then presses Check again (the card tells
+            // them to check the Region, so re-reading it is a natural thing to do) and hits an
+            // outage would otherwise see "the check is unavailable" while the hidden flag still
+            // said verified â€” the order is then recorded as checked when the last word was a failure.
+            $scope.find('.gh-verified-flag, .gh-verified-name, .gh-verified-region').remove();
+            resetVerifyBtnLabel($scope);
+        }
 
-  /**
-   * Autoresize echart charts
-   */
-  const mainContainer = select('#main');
-  if (mainContainer) {
-    setTimeout(() => {
-      new ResizeObserver(function() {
-        select('.echart', true).forEach(getEchart => {
-          echarts.getInstanceByDom(getEchart).resize();
-        })
-      }).observe(mainContainer);
-    }, 200);
-  }
+        $(document).on('click', '.gh-verify-retry', function (e) {
+            e.preventDefault();
+            // Re-press the same button this result belongs to, so one code path does the request.
+            $(this).closest('.gh-fields, .gh-verify-wrap')
+                   .find('.gh-verify-btn').first().trigger('click');
+        });
 
-})();
+        // `why` distinguishes "the buyer chose to skip" from "the check itself was unavailable".
+        // In required mode only the latter is accepted server-side, so the two cannot share a value.
+        function markSkipped($res, why) {
+            var $scope = $res.data('ghScope') || $res.closest('.gh-fields');
+            var value  = (why === 'unavailable') ? 'skipped_unavailable' : 'skipped';
+            $res.html(verifyCard('skipped', vt('skippedName', '(not checked)'), ''));
+            $scope.find('.gh-verified-flag, .gh-verified-name, .gh-verified-region').remove();
+            resetVerifyBtnLabel($scope);
+            $scope.append('<input type="hidden" class="gh-verified-flag" name="gh_verified" value="'
+                + value + '" />');
+        }
+
+        $(document).on('click', '.gh-verify-skip', function (e) {
+            e.preventDefault();
+            markSkipped($(this).closest('.gh-verify-result'), $(this).data('why'));
+        });
+
+        // Puts the verify button's label back to whatever it said before a PASS swapped it to
+        // "Account Verified" â€” used everywhere a check result is dropped (close button, editing a
+        // field, a failed re-check, or a skip), so the button never keeps claiming a check that no
+        // longer holds.
+        function resetVerifyBtnLabel($scope) {
+            var $btn = $scope.find('.gh-verify-btn').first();
+            var orig = $btn.data('ghOrigLabel');
+            if (orig) {
+                $btn.find('span').last().text(orig);
+            }
+        }
+
+        function clearVerify($res, $scope) {
+            $res.empty();
+            $scope.find('.gh-verified-flag, .gh-verified-name, .gh-verified-region').remove();
+            resetVerifyBtnLabel($scope);
+        }
+
+        $(document).on('click', '.gh-verify-clear', function (e) {
+            e.preventDefault();
+            var $res = $(this).closest('.gh-verify-result');
+            clearVerify($res, $res.data('ghScope') || $res.closest('.gh-fields'));
+        });
+
+        // Editing the ID after a check drops the result. A card reading "Account found: Bob" sitting
+        // above a Player ID that is no longer Bob's is worse than no card at all â€” the buyer reads it
+        // as confirmation of what is on screen NOW, and tops up a stranger. Clearing also drops the
+        // hidden gh_verified flag, so the order is not recorded as checked when it wasn't.
+        $(document).on('input change', '.gh-fields [data-gh]', function () {
+            var $scope = $(this).closest('.gh-fields');
+            var $res   = $scope.find('.gh-verify-result').first();
+            if ($res.length && $.trim($res.html()) !== '') {
+                clearVerify($res, $scope);
+            }
+        });
+
+        $(document).on('click', '.gh-verify-btn', function () {
+            var $btn = $(this);
+            // The result area may sit in the wrap below rather than beside the button (the button now
+            // lives inside the input), so look in both places.
+            var $res = $btn.siblings('.gh-verify-result');
+            if (!$res.length) { $res = $btn.closest('.gh-fields').find('.gh-verify-result').first(); }
+            if (!$res.length) { $res = $btn.closest('.gh-verify-wrap').find('.gh-verify-result').first(); }
+            var product = $btn.data('product');
+
+            // Scope to the field-set this button lives in (a mixed-game product renders several).
+            var $scope = $btn.closest('.gh-fields');
+            if (!$scope.length) { $scope = $(document); }
+
+            var fields = {};
+            var has = false;
+            $scope.find('[data-gh]').each(function () {
+                var k = $(this).attr('data-gh');
+                var v = $(this).val();
+                fields[k] = v;
+                if (v) { has = true; }
+            });
+
+            if (!has) {
+                $res.html('<div class="gh-verify-note is-bad" role="alert">' + vEsc(GH_F.i18n.enterId) + '</div>');
+                return;
+            }
+
+            $btn.prop('disabled', true);
+            $res.html('<div class="gh-verify-note is-busy" role="status">' + vEsc(GH_F.i18n.checking) + '</div>');
+
+            $.post(GH_F.ajax, {
+                action: 'gh_verify',
+                nonce: GH_F.nonce,
+                product_code: product,
+                fields: fields
+            })
+                .done(function (r) {
+                    if (r && r.success) {
+                        var vName   = r.data.name || '';
+                        var vRegion = r.data.region || '';
+                        $res.html(verifyCard('ok', vName, vRegion));
+                        $res.data('ghScope', $scope);
+                        $scope.find('.gh-verified-flag, .gh-verified-name, .gh-verified-region').remove();
+                        $scope.append('<input type="hidden" class="gh-verified-flag" name="gh_verified" value="1" />');
+                        // "Verify Account" â†’ "Account Verified", so the button itself confirms the
+                        // pass without the buyer needing to read the card below it. Stash the original
+                        // label the first time (never overwrite it on a re-check), so clearVerify() can
+                        // always put back exactly what was there before, in whatever language it was.
+                        if (! $btn.data('ghOrigLabel')) {
+                            $btn.data('ghOrigLabel', $btn.find('span').last().text());
+                        }
+                        $btn.find('span').last().text(vt('verifiedBtnLabel', 'Account Verified'));
+                        // Carried through to the order line the same way the flag is â€” so "Player Name"
+                        // and "Region" can show on the thank-you page, order details, and order emails,
+                        // not just in this on-page card. Only appended when the check actually returned
+                        // them, so games without a name/region in the response stay unchanged.
+                        if (vName) {
+                            $scope.append($('<input>', {type: 'hidden', 'class': 'gh-verified-name', name: 'gh_verified_name', value: vName}));
+                        }
+                        if (vRegion) {
+                            $scope.append($('<input>', {type: 'hidden', 'class': 'gh-verified-region', name: 'gh_verified_region', value: vRegion}));
+                        }
+                        // Deliberately NOT hidden. Hiding it meant every path that cleared the result
+                        // had to remember to show it again â€” one missed the button's new position and
+                        // left buyers editing an ID with no way to re-check. The card already says
+                        // whether a check passed; a second press just re-checks, which is harmless.
+                    } else {
+                        verifyFailed($res, $scope,
+                            (r && r.data && r.data.message) ? r.data.message
+                                : vt('notFound', 'Player ID / Server Incorrect'),
+                            !!(r && r.data && r.data.retryable));
+                    }
+                })
+                .fail(function () {
+                    // Never reached the site at all â†’ always worth another go.
+                    verifyFailed($res, $scope, vt('checkUnavailable', 'The check is unavailable right now.'), true);
+                })
+                .always(function () {
+                    $btn.prop('disabled', false);
+                });
+        });
+
+        // â”€â”€ Variable product: reveal the field-set for the selected variation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+        // A mixed-game variable product renders one field-set per distinct schema, each hidden and
+        // with its inputs disabled (disabled inputs never POST). Woo fires found_variation on the
+        // variations form; we show + enable only the matching set and re-disable the rest. Same-game
+        // products render a single set with no [data-variation-ids], so this leaves them untouched.
+        // Delegated + form-scoped (falls back to document-wide for [gh_fields] placed outside
+        // the form), so it survives multiple products on a page and late-loaded forms.
+        function ghToggleSets($sets, vid) {
+            $sets.each(function () {
+                var ids = String($(this).attr('data-variation-ids') || '').split(',');
+                var on = vid && ids.indexOf(String(vid)) !== -1;
+                $(this).toggle(!!on).find('input,select').prop('disabled', !on);
+            });
+        }
+        function ghSetsFor($form) {
+            var $in = $form.find('.gh-fields[data-variation-ids]');
+            return $in.length ? $in : $('.gh-fields[data-variation-ids]');
+        }
+        $(document).on('found_variation', 'form.cart', function (e, variation) {
+            ghToggleSets(ghSetsFor($(this)), variation && variation.variation_id);
+        });
+        $(document).on('reset_data hide_variation', 'form.cart', function () {
+            ghToggleSets(ghSetsFor($(this)), 0);
+        });
+
+        // â”€â”€ Field-sync: mirror player fields placed OUTSIDE the add-to-cart form (custom template /
+        // [gh_fields] shortcode) into hidden inputs on submit, so they still POST with add-to-
+        // cart. Fields already inside form.cart submit natively and are skipped (no duplicates).
+        // Disabled fields (a hidden variation's set) are skipped so mixed products never over-post.
+        // In "require it" mode, say so BEFORE the page reloads with a server error. This is a
+        // courtesy, not the guard â€” the server-side add-to-cart guard is what actually holds, because a
+        // theme with AJAX add-to-cart or a quick-view popup never runs this handler at all.
+        $(document).on('submit', 'form.cart', function (e) {
+            if (GH_F.require_verify !== '1') { return; }
+            var blocked = false;
+            $(this).find('.gh-fields').each(function () {
+                var $scope = $(this);
+                if ($scope.is(':hidden') || ! $scope.find('.gh-verify-btn').length) { return; }
+                var v = $scope.find('.gh-verified-flag').val();
+                if (v !== '1' && v !== 'skipped_unavailable') {
+                    blocked = true;
+                    $scope.find('.gh-verify-result').first().html(
+                        '<div class="gh-verify-note is-bad" role="alert">'
+                        + vEsc(vt('mustVerify', 'Please press â€œVerify Accountâ€ first.')) + '</div>');
+                }
+            });
+            if (blocked) {
+                e.preventDefault();
+                var $f = $('.gh-verify-result').filter(function () { return $.trim($(this).html()) !== ''; }).first();
+                if ($f.length && $f[0].scrollIntoView) { $f[0].scrollIntoView({block: 'center'}); }
+                return false;
+            }
+        });
+
+        $(document).on('submit', 'form.cart', function () {
+            var $form = $(this);
+            $form.find('.gh-mirror').remove();
+            $('[data-gh]').each(function () {
+                var $f = $(this);
+                if ($f.is(':disabled')) { return; }
+                if ($f.closest('form.cart').length) { return; }
+                $('<input>', {
+                    type: 'hidden',
+                    'class': 'gh-mirror',
+                    name: 'gh_field[' + $f.attr('data-gh') + ']',
+                    value: $f.val()
+                }).appendTo($form);
+            });
+
+            // The verified/skipped flag rides along the same way. It is appended next to the fields,
+            // so on a shop that places them with [gh_fields] outside form.cart it was the one
+            // thing that never reached the order â€” every order looked unchecked, including the ones
+            // the buyer did check and the ones they explicitly skipped.
+            $('.gh-verified-flag').each(function () {
+                var $f = $(this);
+                if ($f.closest('form.cart').length) { return; }
+                $('<input>', {
+                    type: 'hidden',
+                    'class': 'gh-mirror',
+                    name: 'gh_verified',
+                    value: $f.val()
+                }).appendTo($form);
+            });
+            $('.gh-verified-name, .gh-verified-region').each(function () {
+                var $f = $(this);
+                if ($f.closest('form.cart').length) { return; }
+                $('<input>', {
+                    type: 'hidden',
+                    'class': 'gh-mirror',
+                    name: $f.attr('name'),
+                    value: $f.val()
+                }).appendTo($form);
+            });
+        });
+    });
+})(jQuery);
